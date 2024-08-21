@@ -1,13 +1,10 @@
-# TestSMG
-PRUEBA TÉCNICA BACKEND SMG
-
 ### Documentación Técnica: Implementación del Template de Servicios en Shopify
 
 Este documento detalla la implementación técnica realizada para la página de servicios en Shopify, de acuerdo con los requerimientos del cliente.
 
 #### **Página de Servicios:**
-URL: https://solo-media-group.myshopify.com/pages/servicios
-Clave de acceso: ingaug
+URL: [https://solo-media-group.myshopify.com/pages/servicios](https://solo-media-group.myshopify.com/pages/servicios)  
+Clave de acceso: **ingaug**
 
 ### Requerimientos Implementados
 
@@ -20,54 +17,54 @@ Clave de acceso: ingaug
    - **Validación:** El template se configuró para que solo muestre los productos asociados a esta colección específica.
    - **Código Relacionado:** En el archivo `product-select.liquid`, se utiliza la colección para listar los productos disponibles.
 
-   
+   ```liquid
    {% for product in collections['servicios'].products %}
      <option value="{{ product.variants.first.id }}">{{ product.title }} - {{ product.price }}</option>
    {% endfor %}
-   
+   ```
 
 #### 3. **Template para Mostrar los Productos/Servicios:**
    - **Acción:** Se creó un template de página llamado `page.services.liquid`.
    - **Descripción:** Este template muestra todos los productos/servicios en una sola página, incluyendo un botón de "Agregar al Carrito" para cada uno. El producto de regalo no se muestra.
    - **Código Relacionado:** Se incluye la sección `product-select` en el template para manejar la selección de productos y la lógica del carrito.
 
-  
+   ```liquid
    {%- section 'product-select' -%}
-  
+   ```
 
 #### 4. **Restricción de un Solo Servicio en el Carrito:**
    - **Acción:** Se creó el archivo `product-select.liquid` dentro de la carpeta `sections`.
    - **Descripción:** Este archivo contiene un script que garantiza que solo un servicio puede estar en el carrito a la vez. Si un cliente intenta agregar otro servicio, el carrito se vacía y se reemplaza con el nuevo servicio.
    - **Código Relacionado:** Se implementó la siguiente lógica en el script:
 
-   
+   ```javascript
    document.getElementById('add-to-cart').addEventListener('click', function() {
      // Código que vacía el carrito y añade el nuevo producto
    });
-
+   ```
 
 #### 5. **Schema para Mostrar Reviews:**
    - **Acción:** Se creó una sección llamada `reviews-section.liquid`.
    - **Descripción:** Este schema permite mostrar los reviews generales en la página. No se requiere maquetación o vista avanzada, solo lectura y despliegue de la información.
    - **Código Relacionado:** El template `page.services.liquid` incluye la sección para mostrar los reviews:
 
-   
+   ```liquid
    {% section 'reviews-section' %}
-  
+   ```
 
 #### 6. **Carga del Producto al Carrito usando AJAX:**
    - **Acción:** Se implementó un script en `product-select.liquid`.
    - **Descripción:** Este script maneja la adición de servicios al carrito usando AJAX, para una experiencia de usuario fluida y sin recargas de página.
    - **Código Relacionado:**
 
- 
+   ```javascript
    fetch('/cart/add.js', {
      method: 'POST',
      body: formData
    }).then(function(response) {
      // Manejo de la respuesta
    });
- 
+   ```
 
 #### 7. **Producto de Regalo por la Compra de un Servicio:**
    - **Acción:** Se configuró un producto regalo utilizando la aplicación "Gift Box".
@@ -83,7 +80,7 @@ Clave de acceso: ingaug
    - **Función:** Define la estructura de la página de servicios, incluyendo la selección de productos y la visualización de reviews.
    - **Código:**
 
-   
+   ```liquid
    {%- comment -%}
      El siguiente JSON define el esquema para Product Select
    {%- endcomment -%}
@@ -105,13 +102,29 @@ Clave de acceso: ingaug
    {%- section 'product-select' -%}
 
    {% section 'reviews-section' %}
-  
+   ```
 
 #### **Archivo:** `product-select.liquid`
    - **Función:** Muestra un selector de productos y maneja la adición al carrito, asegurando que solo un servicio esté en el carrito a la vez.
    - **Código:**
 
-   
+   ```liquid
+   <style>
+   button#add-to-cart {
+       background: #121212;
+       color: #fff;
+       padding: 10px 60px;
+       border: 0;
+       border-radius: 50px;
+       cursor: pointer;
+   }
+   select#product-list {
+       padding: 10px;
+   }
+   div#shopify-section-product-select {
+       padding: 50px;
+   }
+   </style>
 
    <select id="product-list">
      <option value="">Selecciona un producto</option>
@@ -159,6 +172,6 @@ Clave de acceso: ingaug
        }
      });
    </script>
-  
+   ```
 
 Esta documentación abarca la implementación de los requerimientos y los archivos de código asociados, describiendo la funcionalidad clave y el propósito de cada sección.
